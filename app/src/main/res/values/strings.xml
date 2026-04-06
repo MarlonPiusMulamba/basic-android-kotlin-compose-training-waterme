@@ -16,32 +16,35 @@
 <resources>
     <string name="app_name">Water Me</string>
     <string name="remind_me">Remind me to water %s in…</string>
-    <string name="five_seconds">5 seconds</string>
-    <string name="one_day">1 day</string>
+    <string name="thirty_seconds">30 seconds</string>
+    <string name="five_minutes">5 minutes</string>
+    <string name="ten_minutes">10 minutes</string>
+    <string name="one_hour">1 hour</string>
     <string name="one_week">1 week</string>
+    <string name="two_weeks">2 weeks</string>
     <string name="one_month">1 month</string>
     <string name="water">Water</string>
     <string name="time_to_water">It\'s time to water your %s.</string>
 
-    <string name="lithop">Lithop</string>
     <string name="carrot">Carrot</string>
-    <string name="peony">Peony</string>
-    <string name="pothos">Pothos</string>
-    <string name="fiddle_leaf_fig">Fiddle Leaf Fig</string>
+    <string name="sukuma">Sukuma</string>
+    <string name="beans">Beans</string>
+    <string name="okra">Okra</string>
     <string name="strawberry">Strawberry</string>
+    
     <string name="daily">daily</string>
     <string name="weekly">weekly</string>
     <string name="monthly">monthly</string>
-    <string name="succulent">Succulent</string>
+    
     <string name="root">Root</string>
-    <string name="flower">Flower</string>
-    <string name="houseplant">Houseplant</string>
-    <string name="broadleaf_evergreen">Broadleaf evergreen</string>
+    <string name="leafy_green">Leafy Green</string>
+    <string name="legume">Legume</string>
+    <string name="vegetable">Vegetable</string>
     <string name="fruit">Fruit</string>
-    <string name="stone_mimicking_succulent">Stone mimicking succulent</string>
+    
     <string name="hardy_root_vegetable">Hardy root vegetable</string>
-    <string name="spring_blooming_flower">Spring blooming flower</string>
-    <string name="indoor_vine">Indoor vine</string>
-    <string name="ornamental_fig">Ornamental fig</string>
+    <string name="nutritious_kale">Nutritious leafy kale</string>
+    <string name="protein_rich_legume">Protein-rich climbing plant</string>
+    <string name="warm_weather_veg">Warm weather edible green pod</string>
     <string name="delicious_multiple_fruit">Delicious multiple fruit</string>
 </resources>

@@ -16,34 +16,44 @@
 
 package com.example.waterme.data
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import android.content.Intent
+import android.os.Build
 import com.example.waterme.model.Plant
+import com.example.waterme.worker.AlarmReceiver
 import com.example.waterme.worker.WaterReminderWorker
+import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
 
-class WorkManagerWaterRepository(context: Context) : WaterRepository {
-    private val workManager = WorkManager.getInstance(context)
+class WorkManagerWaterRepository(private val context: Context, private val plantDao: PlantDao) : WaterRepository {
+    
+    override val plants: Flow<List<Plant>> = plantDao.getAllPlants()
 
-    override val plants: List<Plant>
-        get() = DataSource.plants
+    override suspend fun addPlant(plant: Plant) {
+        plantDao.insertPlant(plant)
+    }
 
     override fun scheduleReminder(duration: Long, unit: TimeUnit, plantName: String) {
-        val data = Data.Builder()
-        data.putString(WaterReminderWorker.nameKey, plantName)
-
-        val workRequestBuilder = OneTimeWorkRequestBuilder<WaterReminderWorker>()
-            .setInitialDelay(duration, unit)
-            .setInputData(data.build())
-            .build()
-
-        workManager.enqueueUniqueWork(
-            plantName + duration,
-            ExistingWorkPolicy.REPLACE,
-            workRequestBuilder
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra(WaterReminderWorker.nameKey, plantName)
+        }
+        
+        // Ensure uniqueness for different plants
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            plantName.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        val triggerTime = System.currentTimeMillis() + unit.toMillis(duration)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+        }
     }
 }

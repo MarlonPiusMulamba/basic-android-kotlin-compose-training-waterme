@@ -28,12 +28,16 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
+    secondary = md_theme_dark_secondary,
     surfaceVariant = md_theme_dark_surfaceVariant,
+    background = md_theme_dark_background
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
+    secondary = md_theme_light_secondary,
     surfaceVariant = md_theme_light_surfaceVariant,
+    background = md_theme_light_background
 )
 
 @Composable

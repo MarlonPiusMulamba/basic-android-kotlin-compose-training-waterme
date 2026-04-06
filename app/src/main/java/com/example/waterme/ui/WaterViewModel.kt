@@ -25,9 +25,28 @@ import com.example.waterme.WaterMeApplication
 import com.example.waterme.data.Reminder
 import com.example.waterme.data.WaterRepository
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import com.example.waterme.model.Plant
+
 class WaterViewModel(private val waterRepository: WaterRepository) : ViewModel() {
 
-    internal val plants = waterRepository.plants
+    val plants: StateFlow<List<Plant>> = waterRepository.plants
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
+
+    fun addPlant(name: String, type: String, description: String, schedule: String, imageUri: String?) {
+        viewModelScope.launch {
+            waterRepository.addPlant(Plant(name = name, type = type, description = description, schedule = schedule, imageUri = imageUri))
+        }
+    }
 
     fun scheduleReminder(reminder: Reminder) {
         waterRepository.scheduleReminder(reminder.duration, reminder.unit, reminder.plantName)

@@ -23,5 +23,5 @@ interface AppContainer {
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
-    override val waterRepository = WorkManagerWaterRepository(context)
+    override val waterRepository = WorkManagerWaterRepository(context, PlantDatabase.getDatabase(context).plantDao())
 }

@@ -37,7 +37,10 @@ const val NOTIFICATION_ID = 1
 const val REQUEST_CODE = 0
 
 // Reminder schedule
-const val FIVE_SECONDS: Long = 5
-const val ONE_DAY: Long = 1
+const val THIRTY_SECONDS: Long = 30
+const val FIVE_MINUTES: Long = 5
+const val TEN_MINUTES: Long = 10
+const val ONE_HOUR: Long = 1
 const val SEVEN_DAYS: Long = 7
+const val FOURTEEN_DAYS: Long = 14
 const val THIRTY_DAYS: Long = 30

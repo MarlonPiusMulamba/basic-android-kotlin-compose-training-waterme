@@ -35,6 +35,10 @@ class WorkManagerWaterRepository(private val context: Context, private val plant
         plantDao.insertPlant(plant)
     }
 
+    override suspend fun deletePlant(plant: Plant) {
+        plantDao.deletePlant(plant)
+    }
+
     override fun scheduleReminder(duration: Long, unit: TimeUnit, plantName: String) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).apply {

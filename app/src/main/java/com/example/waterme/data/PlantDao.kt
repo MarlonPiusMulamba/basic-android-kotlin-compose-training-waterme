@@ -14,4 +14,7 @@ interface PlantDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlant(plant: Plant)
+
+    @androidx.room.Delete
+    suspend fun deletePlant(plant: Plant)
 }

@@ -42,9 +42,26 @@ class WaterViewModel(private val waterRepository: WaterRepository) : ViewModel()
             initialValue = emptyList()
         )
 
+    init {
+        viewModelScope.launch {
+            val defaults = listOf("Carrot", "Sukuma", "Beans", "Okra", "Strawberry")
+            waterRepository.plants.first().forEach { plant ->
+                if (defaults.contains(plant.name) && plant.imageUri == null) {
+                    waterRepository.deletePlant(plant)
+                }
+            }
+        }
+    }
+
     fun addPlant(name: String, type: String, description: String, schedule: String, imageUri: String?) {
         viewModelScope.launch {
             waterRepository.addPlant(Plant(name = name, type = type, description = description, schedule = schedule, imageUri = imageUri))
+        }
+    }
+
+    fun deletePlant(plant: Plant) {
+        viewModelScope.launch {
+            waterRepository.deletePlant(plant)
         }
     }
 

@@ -85,8 +85,10 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.ui.Alignment
@@ -124,7 +126,8 @@ fun WaterMeApp(waterViewModel: WaterViewModel = viewModel(factory = WaterViewMod
                         onScheduleReminder = { waterViewModel.scheduleReminder(it) },
                         onAddPlant = { name, type, desc, sched, uri ->
                              waterViewModel.addPlant(name, type, desc, sched, uri)
-                        }
+                        },
+                        onDeletePlant = { waterViewModel.deletePlant(it) }
                     )
                 }
             }
@@ -170,6 +173,7 @@ fun PlantListContent(
     plants: List<Plant>,
     onScheduleReminder: (Reminder) -> Unit,
     onAddPlant: (String, String, String, String, String?) -> Unit,
+    onDeletePlant: (Plant) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedPlant by rememberSaveable { mutableStateOf<Plant?>(null) }
@@ -195,6 +199,7 @@ fun PlantListContent(
                         selectedPlant = plant
                         showReminderDialog = true
                     },
+                    onDelete = { onDeletePlant(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -259,7 +264,12 @@ fun AddPlantDialog(onDismiss: () -> Unit, onAdd: (String, String, String, String
 }
 
 @Composable
-fun PlantListItem(plant: Plant, onItemSelect: (Plant) -> Unit, modifier: Modifier = Modifier) {
+fun PlantListItem(
+    plant: Plant,
+    onItemSelect: (Plant) -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(modifier = modifier
         .clickable { onItemSelect(plant) }
     ) {
@@ -269,13 +279,21 @@ fun PlantListItem(plant: Plant, onItemSelect: (Plant) -> Unit, modifier: Modifie
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = plant.name,
+            androidx.compose.foundation.layout.Row(
                 modifier = Modifier.fillMaxWidth(),
-                style = typography.headlineSmall,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
-            )
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = plant.name,
+                    style = typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Filled.Delete, contentDescription = "Delete", tint = Color.Red)
+                }
+            }
             if (plant.imageUri != null) {
                 AsyncImage(
                     model = Uri.parse(plant.imageUri),

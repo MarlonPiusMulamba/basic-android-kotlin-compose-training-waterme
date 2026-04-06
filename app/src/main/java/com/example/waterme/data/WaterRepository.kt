@@ -25,4 +25,5 @@ interface WaterRepository {
     fun scheduleReminder(duration: Long, unit: TimeUnit, plantName: String)
     val plants: Flow<List<Plant>>
     suspend fun addPlant(plant: Plant)
+    suspend fun deletePlant(plant: Plant)
 }

@@ -63,7 +63,7 @@ fun makePlantReminderNotification(
     val pendingIntent: PendingIntent = createPendingIntent(context)
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID_ALARM)
-        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setSmallIcon(R.drawable.ic_launcher_custom)
         .setContentTitle(NOTIFICATION_TITLE)
         .setContentText(message)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
